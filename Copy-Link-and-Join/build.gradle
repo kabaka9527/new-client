@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+version '1.0'
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+// 修改源代码路径指向正确的位置
+sourceSets.main.java.srcDirs = ['/root/claj/Copy-Link-and-Join/src']
+
+repositories {
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+}
+
+ext {
+    arcVersion = 'v142'
+}
+
+dependencies {
+    implementation "com.github.Anuken.Arc:arc-core:$arcVersion"
+    implementation "com.github.Anuken.Arc:arc-net:$arcVersion"
+}
+
+// 设置主类
+mainClassName = 'claj.Main'
+
+jar {
+    archivesBaseName = "Copy-Link-and-Join"
+    
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes('Main-Class': 'claj.Main')
+    }
+}
